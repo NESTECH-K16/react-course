@@ -1,25 +1,17 @@
 import './App.css'
+import Paragraph from './components/paragraph/index'
 
-function App() {
-	const age = 14
+// Component
+const App = () => {
+	//
 
-	const renderContentFollowByAge = () => {
-		if (age > 19) {
-			return 1
-		} else {
-			return 2
-		}
-	}
-
+	// return <p className='para'>{number}</p>
+	// self close
 	return (
-		<div className='App'>
-			<p>Hello React App</p>
-			<a href='#'>Hello React App Huy</a>
-			<span className='age'>{age}</span>
-			<br />
-			{/* <span>{renderContentFollowByAge()}</span> */}
-			{age > 19 ? 1 : age > 17 ? 2 : 3}
-		</div>
+		<>
+			<Paragraph color='lightcoral' backgroundColor='white' />
+			<Paragraph color='salmon' backgroundColor='black' />
+		</>
 	)
 }
 
