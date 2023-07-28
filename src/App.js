@@ -10,11 +10,11 @@ function App() {
 			return 2
 		}
 	}
-  
+
 	return (
 		<div className='App'>
 			<p>Hello React App</p>
-			<a href='#'>Hello React App</a>
+			<a href='#'>Hello React App Huy</a>
 			<span className='age'>{age}</span>
 			<br />
 			{/* <span>{renderContentFollowByAge()}</span> */}
