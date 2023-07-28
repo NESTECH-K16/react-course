@@ -5,3 +5,9 @@ body {
 	min-height: 100vh;
 }
 
+.number {
+	font-size: 48px;
+	margin-right: 100px;
+	color: red;
+}
+
