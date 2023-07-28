@@ -1,0 +1,17 @@
+body {
+	/* background-color: red; */
+}
+
+.para {
+	font-size: 34px;
+	color: salmon;
+}
+
+.btn {
+	background-color: lightcoral;
+	color: white;
+	height: 44px;
+	line-height: 44px;
+	/* padding: 5px 12px; */
+}
+
