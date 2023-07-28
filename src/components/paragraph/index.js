@@ -1,25 +1,25 @@
-import React from 'react'
+import { useState } from 'react'
+
 import classes from './paragraph.module.css'
 
 const Paragraph = (props) => {
-	console.log('props', props)
-	console.log('props color', props.color)
-	console.log('props background color', props.backgroundColor)
+	const content = props.content
+	const contentText = `All props values was received ${props.color} + ${props.backgroundColor}`
 
-	// {
-	//   color: 'blue',
-	//   backgroundColor: 'red'
-	// }
-	// console.log('classes', classes)
+	const increaseNumber = () => {
+		const newNumber = props.number + 1
+		props.increaseNumber(newNumber)
+	}
 
 	return (
 		<>
 			<div
 				className={classes.para}
 				style={{ color: props.color, backgroundColor: props.backgroundColor, marginBottom: 20 }}>
-				Paragraph
+				<p>{content}</p>
 			</div>
-			<button className={classes.btn}>Click Me!</button>
+			<span className='number'>{props.number}</span>
+			<button onClick={increaseNumber}>Click Me!</button>
 		</>
 	)
 }
