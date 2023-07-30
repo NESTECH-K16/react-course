@@ -1,26 +1,60 @@
 import { useState } from 'react'
 import './App.css'
-import Paragraph from './components/paragraph/index'
+import Button from './components/button'
 
 // Component
 const App = () => {
-	const [number, setNumber] = useState(0)
+  const [style1, setStyle1] = useState({})
+  const [style2, setStyle2] = useState({
+    width: '200px',
+    height: '100px',
+    backgroundColor: 'blue',
+    fontSize: '32px',
+    borderRadius: '16px',
+  })
+  const [style3, setStyle3] = useState({
+    width: '250px',
+    height: '120px',
+    backgroundColor: 'orange',
+    fontSize: '42px',
+    borderRadius: '24px',
+  })
 
-	return (
-		<>
-			<Paragraph
-				color='lightcoral'
-				backgroundColor='white'
-				content='Paragraph number 1'
-				showInBody={true}
-				number={number}
-				increaseNumber={setNumber}
-			/>
+  const changeStyle = () => {
+    setStyle1((previousState) => {
+      return {
+        ...previousState,
+        backgroundColor: 'blue',
+        color: 'black',
+        width: '120px',
+      }
+    })
+    setStyle2((previousState) => {
+      return {
+        ...previousState,
+        backgroundColor: 'red',
+        color: 'orange',
+        width: '150px',
+      }
+    })
+    setStyle3((previousState) => {
+      return {
+        ...previousState,
+        backgroundColor: 'black',
+        width: '300px',
+        borderRadius: '8px',
+      }
+    })
+  }
 
-			{/* <Paragraph color='salmon' backgroundColor='black' content='Paragraph number 2' showInBody={false} /> */}
-		</>
-	)
+  return (
+    <div>
+      <Button text='Button 1' style={style1} />
+      <Button text='Button 2' style={style2} />
+      <Button text='Button 3' style={style3} />
+      <Button onClick={changeStyle}>Change Style</Button>
+    </div>
+  )
 }
 
 export default App
-
