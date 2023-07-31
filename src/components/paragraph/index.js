@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
 import classes from './paragraph.module.css'
+// Controlled component
+// stateful
 
 const Paragraph = (props) => {
 	const content = props.content
@@ -12,7 +14,7 @@ const Paragraph = (props) => {
 	}
 
 	return (
-		<>
+		<div className='bordered'>
 			<div
 				className={classes.para}
 				style={{ color: props.color, backgroundColor: props.backgroundColor, marginBottom: 20 }}>
@@ -20,7 +22,7 @@ const Paragraph = (props) => {
 			</div>
 			<span className='number'>{props.number}</span>
 			<button onClick={increaseNumber}>Click Me!</button>
-		</>
+		</div>
 	)
 }
 
