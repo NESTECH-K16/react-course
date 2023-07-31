@@ -37,3 +37,25 @@
 	}
 }
 
+.heading {
+	font-size: 45px;
+	color: #262626;
+}
+.year-current {
+	font-size: 34px;
+	margin-right: 40px;
+}
+
+select {
+	height: 48px;
+	width: 100px;
+	border-radius: 8px;
+	padding: 12px;
+	cursor: pointer;
+}
+
+.result {
+	font-size: 48px;
+	color: darkorange;
+}
+

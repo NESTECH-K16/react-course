@@ -1,6 +1,7 @@
 // impure and pure function
 let addNew = 0
 // internal state
+// external state
 function getTotal(num1, num2) {
 	return num1 + num2 + addNew
 }
@@ -19,4 +20,8 @@ const sum4 = getTotal(1, 2)
 const sum5 = getTotal(1, 3)
 const sum6 = getTotal(1, 4)
 console.log(sum4, sum5, sum6)
+const oldResult = getTotal(1, 2)
+
+addNew = 6
+const sum7 = getTotal(1, 2)
 
