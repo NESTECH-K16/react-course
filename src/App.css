@@ -1,107 +1,20 @@
-body {
-	font-size: 24px;
-	line-height: 28px;
-}
-
-.heading {
-	font-size: 45px;
-	color: #262626;
-}
-.year-current {
-	font-size: 34px;
-	margin-right: 40px;
-}
-
-select {
-	height: 48px;
-	width: 100px;
-	border-radius: 8px;
-	padding: 12px;
-	cursor: pointer;
-}
-
-.result {
-	font-size: 48px;
-	color: darkorange;
-	line-height: 48px;
-}
-
-input.username-input {
-	height: 40px;
-	line-height: 40px;
-	padding: 12px;
-	border-radius: 8px;
-	width: 200px;
-	font-size: 24px;
-}
-
-.bordered {
-	border: 1px solid salmon;
-}
-
-#app {
-	max-width: 1200px;
-	width: 800px;
-	margin: auto;
-}
-
-.students-student {
-	background-color: #001f3f;
-	color: white;
-	padding: 40px;
-	border-radius: 10px;
-	margin-top: 24px;
-	display: flex;
-	gap: 24px;
-	justify-content: space-between;
-}
-
-.student-form {
-	background-color: #2ecc40;
-	color: white;
-	padding: 40px;
-	border-radius: 10px;
-	margin-bottom: 48px;
-}
-
-.form-controls {
+.app-container {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
 }
-
-.form-controls input {
-	line-height: 44px;
-	height: 44px;
-	font-size: 20px;
-	border-radius: 4px;
-	outline: none;
-	border: none;
-	padding: 5px 12px;
-}
-.form-actions {
+  
+.button-container {
 	display: flex;
-	justify-content: flex-end;
-	margin-top: 36px;
+	gap: 10px;
+	margin-bottom: 20px;
 }
-.form-actions button {
-	height: 44px;
-	line-height: 44px;
-	border-radius: 4px;
+  
+.button-container button {
+	padding: 10px 20px;
+	color: white;
 	border: none;
-	padding: 0 24px;
-	font-size: 24px;
-	font-weight: 500;
 	cursor: pointer;
-	transition: all 0.5s ease;
 }
-
-.form-actions button:hover {
-	background-color: white;
-	color: #2ecc40;
-}
-
-.text-center {
-	text-align: center;
-}
-

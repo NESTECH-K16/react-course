@@ -51,7 +51,7 @@ const App = () => {
 	};
   
 	const getRandomFontSize = () => {
-	  const fontSizes = ["14px", "16px", "18px", "20px"];
+	  const fontSizes = ["14px", "16px", "18px", "20px", "24px"];
 	  return fontSizes[Math.floor(Math.random() * fontSizes.length)];
 	};
   
