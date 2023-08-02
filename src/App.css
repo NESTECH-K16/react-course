@@ -84,7 +84,7 @@ input.username-input {
 	justify-content: flex-end;
 	margin-top: 36px;
 }
-.form-actions button {
+/* .form-actions button {
 	height: 44px;
 	line-height: 44px;
 	border-radius: 4px;
@@ -94,14 +94,45 @@ input.username-input {
 	font-weight: 500;
 	cursor: pointer;
 	transition: all 0.5s ease;
-}
+} */
 
-.form-actions button:hover {
+/* .form-actions button:hover {
 	background-color: white;
 	color: #2ecc40;
-}
+} */
 
 .text-center {
 	text-align: center;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+.fa-trash:hover {
+	color: red;
+	transition: all 0.5s ease-in-out;
+}
+
+.flex {
+	display: flex;
+}
+
+.course {
+	display: flex;
+	flex-direction: column;
+}
+
+.gap-24 {
+	gap: 24px;
+}
+
+input[type='radio'] {
+	width: 24px;
+	height: 24px;
+}
+
+.form-heading {
+	font-size: 34px;
+	color: chocolate;
 }
 

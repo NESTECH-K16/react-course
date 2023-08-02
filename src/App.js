@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Paragraph from './components/paragraph/index'
 // import Header from './components/layout/Header'
 import Header from './components/layout/Header'
+import { styled } from 'styled-components'
 
 // Component
 
@@ -59,6 +60,30 @@ const studentsData = [
 	// },
 ]
 
+const StyledButton = styled.button`
+	height: 44px;
+	line-height: 44px;
+	border-radius: 4px;
+	border: none;
+	padding: 0 24px;
+	font-size: 24px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.5s ease;
+`
+
+const Button = styled.button`
+	/* Adapt the colors based on primary prop */
+	background: ${(props) => (props.$primary ? '#BF4F74' : 'white')};
+	color: ${(props) => props.color};
+
+	font-size: 1em;
+	margin: 1em;
+	padding: 0.25em 1em;
+	border: 2px solid #bf4f74;
+	border-radius: 3px;
+`
+
 const App = () => {
 	// state cua element
 	// const [state, setState] = useState(initialState)
@@ -72,6 +97,33 @@ const App = () => {
 
 	const [studentUsername, setStudentUsername] = useState('')
 	const [phone, setPhone] = useState('')
+	const [name, setName] = useState()
+	const [course, setCourse] = useState('')
+	const [formName, setFormName] = useState('Create Form')
+	const [studentNeedUpdate, setStudentNeedUpdate] = useState('')
+	const [users, setUsers] = useState([])
+	const [timer, setTimer] = useState(0)
+
+	useEffect(() => {
+		console.log('Run on the first time ...')
+		const getUsers = async () => {
+			try {
+				const data = await fetch(`http://localhost:8000/users`)
+				const users = await data.json()
+				setUsers(users)
+				console.log('data', await data.json())
+			} catch (error) {}
+		}
+
+		getUsers()
+	}, [timer])
+
+	useEffect(() => {
+		setTimeout(() => {
+			const newTimer = timer + 1
+			setTimer(newTimer)
+		}, 3000)
+	}, [timer])
 
 	// two way binding
 	const renderIntro = () => {
@@ -109,29 +161,70 @@ const App = () => {
 		setIsChecked(e.target.checked)
 	}
 
-	const addStudentHandler = (e) => {
+	const formSubmitHandler = (e) => {
 		e.preventDefault()
-		const newStudent = {
-			id: Math.random(),
-			username: studentUsername,
-			phone,
-		}
+		if (formName === 'EDIT') {
+			const newStudent = {
+				id: studentNeedUpdate,
+				username: studentUsername,
+				phone,
+				course,
+			}
+			// const studentsUpdated = [...students]
 
-		const studentExisted = students.find((std) => std.phone === phone)
-		// previousState students
-		if (!studentExisted) {
-			setStudents([...students, newStudent])
-			// alert(`Successfully!!!!`)
+			// const currentStudentIdx = students.findIndex((std) => std.id === studentNeedUpdate.id)
+			// studentsUpdated[currentStudentIdx] = newStudent
+			// console.log('studentsUpdated', studentsUpdated)
+			// setStudents([...studentsUpdated])
+
+			const studentUpdated = students.map((std) => {
+				if (std.id === studentNeedUpdate) {
+					return { ...newStudent }
+				}
+				return std
+			})
+
+			setStudents(studentUpdated)
 		} else {
-			// alert(`Học sinh đã tồn tại!`)
+			const newStudent = {
+				id: Math.random(),
+				username: studentUsername,
+				phone,
+				course,
+			}
+			const studentExisted = students.find((std) => std.phone === phone)
+			if (!studentExisted) {
+				setStudents([...students, newStudent])
+			} else {
+			}
 		}
 
 		setStudentUsername('')
 		setPhone('')
 	}
 
+	const deleteHandler = (studentId) => {
+		console.log('Id of student', studentId)
+		const newStudentsUpdated = students.filter((std) => std.id !== studentId)
+		alert(`Are u sure ?`)
+		setStudents([...newStudentsUpdated])
+	}
+
+	const courseChangeHandler = (e) => {
+		console.log(e)
+		setCourse(e.target.value)
+	}
+
+	const editHandler = (id) => {
+		// const newStudent = {}
+		const currentStudentIdx = students.findIndex((std) => std.id === id)
+
+		// students[currentStudentIdx] = newStudent
+	}
+
 	return (
 		<div className='app'>
+			{console.log('students', students)}
 			{/* <p className='heading'>Render UI</p>
 			<span className='year-current'>{year}</span>
 			<input className='username-input' type='text' value={username} onChange={changeUsernameHandler} /> <br />
@@ -149,7 +242,10 @@ const App = () => {
 			<p className='result'>{`Học sinh ${username} không thuộc ${renderIntro()}`}</p>
 			{username ? <p className='result'>{`${username} ${isChecked ? 'đã' : 'chưa'} có kinh nghiệm lập trình!`}</p> : ''} */}
 			<div className='student-form'>
-				<form action='' onSubmit={addStudentHandler}>
+				{console.log('timer', timer)}
+				{JSON.stringify(users)}
+				<p className='form-heading'>{formName}</p>
+				<form action='' onSubmit={formSubmitHandler}>
 					<div className='form-controls'>
 						<label htmlFor='username'>Username</label>
 						<input
@@ -163,8 +259,39 @@ const App = () => {
 						<label htmlFor='phone'>Phone</label>
 						<input id='phone' type='text' value={phone} onChange={(e) => setPhone(e.target.value)} />
 					</div>
+					<div className='course'>
+						<p>Course?</p>
+						<div className='flex gap-24'>
+							<div className='flex'>
+								<label htmlFor='yes'>JAVA</label>
+								<input
+									type='radio'
+									name='course'
+									id='yes'
+									value='java'
+									onChange={courseChangeHandler}
+									checked={course === 'java'}
+								/>
+							</div>
+							<div className='flex'>
+								<label htmlFor='no'>NODE</label>
+								<input type='radio' name='course' id='no' value='node' checked={course === 'node'} />
+							</div>
+							<div className='flex'>
+								<label htmlFor='yes'>REACT JS</label>
+								<input type='radio' name='course' id='yes' value='react' checked={course === 'react'} />
+							</div>
+							<div className='flex'>
+								<label htmlFor='no'>PHP</label>
+								<input type='radio' name='course' id='no' value='php' checked={course === 'php'} />
+							</div>
+						</div>
+					</div>
+
 					<div className='form-actions'>
-						<button className='submit'>Add New Student</button>
+						<Button $primary color='#000'>
+							Add New Student
+						</Button>
 					</div>
 				</form>
 			</div>
@@ -174,8 +301,20 @@ const App = () => {
 						return (
 							<div className='students-student' key={student.id}>
 								<span>{student.username}</span> <br />
+								<span>{student.course}</span> <br />
 								<span>{student.phone}</span>
-								<i className='fa-solid fa-trash'></i>
+								<i
+									className='fa-solid fa-pen-to-square'
+									onClick={() => {
+										editHandler(student.id)
+										setFormName('EDIT')
+										const { username, phone, course } = student
+										setStudentUsername(username)
+										setPhone(phone)
+										setCourse(course)
+										setStudentNeedUpdate(student.id)
+									}}></i>
+								<i className='fa-solid fa-trash cursor-pointer' onClick={() => deleteHandler(student.id)}></i>
 							</div>
 						)
 					})
@@ -183,6 +322,7 @@ const App = () => {
 					<p className='text-center'>No student available</p>
 				)}
 			</div>
+			<Paragraph />
 		</div>
 	)
 }

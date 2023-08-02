@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import classes from './paragraph.module.css'
+import './paragraph.scss'
 // Controlled component
 // stateful
 
@@ -15,9 +15,7 @@ const Paragraph = (props) => {
 
 	return (
 		<div className='bordered'>
-			<div
-				className={classes.para}
-				style={{ color: props.color, backgroundColor: props.backgroundColor, marginBottom: 20 }}>
+			<div className={'para'} style={{ color: props.color, backgroundColor: props.backgroundColor, marginBottom: 20 }}>
 				<p>{content}</p>
 			</div>
 			<span className='number'>{props.number}</span>
