@@ -6,62 +6,9 @@ import Header from './components/layout/Header'
 
 // Component
 
-const studentsData = [
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Vương Hồng Quyết',
-	// 	phone: '362050424',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Nguyễn Anh Tài',
-	// 	phone: '338089200',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Phùng Văn Duy',
-	// 	phone: '911183701',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Nguyễn Quang Huy',
-	// 	phone: '0976736018',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Nguyễn Xuân Kỳ',
-	// 	phone: '865997380',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Phạm Quốc Trường',
-	// 	phone: '818300154',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Vũ Tiến Thành',
-	// 	phone: '985462373',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Đoàn Quang Tịnh',
-	// 	phone: '336183665',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'BÙI TUẤN THẠCH',
-	// 	phone: '869647269',
-	// },
-	// {
-	// 	id: Math.random(),
-	// 	username: 'Lê Đắc Lực',
-	// 	phone: '966689312',
-	// },
-]
+const studentsData = []
 
 const App = () => {
-	// state cua element
-	// const [state, setState] = useState(initialState)
 	const [students, setStudents] = useState(studentsData)
 
 	const [year, setYear] = useState('2023') //[number,  callback] camel case username =
@@ -72,6 +19,13 @@ const App = () => {
 
 	const [studentUsername, setStudentUsername] = useState('')
 	const [phone, setPhone] = useState('')
+
+	const [isEditing, setIsEditing] = useState(false);
+	const [editedStudentId, setEditedStudentId] = useState(null);
+	const [editedUsername, setEditedUsername] = useState('');
+	const [editedPhone, setEditedPhone] = useState('');
+
+
 
 	// two way binding
 	const renderIntro = () => {
@@ -111,6 +65,23 @@ const App = () => {
 
 	const addStudentHandler = (e) => {
 		e.preventDefault()
+
+		if (studentUsername.trim() === '' || phone.trim() === '') {
+			alert('Hãy nhập thông tin');
+			return;
+		}
+
+		const usernamePattern = /^[a-zA-Z\u00C0-\u024F\s]+$/;
+  		if (!usernamePattern.test(studentUsername)) {
+    		alert('Username chỉ chứa các ký tự');
+    		return;
+  		}
+		const phonePattern = /^\d+$/;
+		if (!phonePattern.test(phone)) {
+			alert('Phone chỉ chứa các số');
+			return;
+		}
+
 		const newStudent = {
 			id: Math.random(),
 			username: studentUsername,
@@ -121,33 +92,46 @@ const App = () => {
 		// previousState students
 		if (!studentExisted) {
 			setStudents([...students, newStudent])
-			// alert(`Successfully!!!!`)
+			alert(`Successfully!!!!`)
 		} else {
-			// alert(`Học sinh đã tồn tại!`)
+			alert(`Học sinh đã tồn tại!`)
 		}
 
 		setStudentUsername('')
 		setPhone('')
 	}
 
+	const editStudentHandler = (id) => {
+		const student = students.find((std) => std.id === id);
+  		setEditedStudentId(id);
+  		setEditedUsername(student.username);
+  		setEditedPhone(student.phone);
+  		setIsEditing(true);
+	}
+
+	const removeStudentHandler = (id) => {
+		const updatedStudents = students.filter((student) => student.id !== id);
+  		setStudents(updatedStudents);
+	}
+
+	const saveChangeHandler = (studentId) => {
+		const updatedStudents = students.map((student) => {
+		  	if (student.id === studentId) {
+				return {
+			  		...student,
+			  		username: editedUsername,
+			  		phone: editedPhone,
+				};
+		  	}
+		  	return student;
+		});
+		setStudents(updatedStudents);
+		setIsEditing(false);
+	};
+	  
+
 	return (
 		<div className='app'>
-			{/* <p className='heading'>Render UI</p>
-			<span className='year-current'>{year}</span>
-			<input className='username-input' type='text' value={username} onChange={changeUsernameHandler} /> <br />
-			<textarea name='' id='' cols='30' rows='10'></textarea>
-			<div>
-				<label htmlFor='hobby'>Code</label>
-				<input id='hobby' type='checkbox' value={isChecked} onChange={hobbiesChangeHandler} />
-			</div>
-			<select value={year} onChange={onChangeHandler}>
-				<option value='2023'>2023</option>
-				<option value='2022'>2022</option>
-				<option value='2021'>2021</option>
-			</select>
-			<p className='result'>{greetingClass}</p>
-			<p className='result'>{`Học sinh ${username} không thuộc ${renderIntro()}`}</p>
-			{username ? <p className='result'>{`${username} ${isChecked ? 'đã' : 'chưa'} có kinh nghiệm lập trình!`}</p> : ''} */}
 			<div className='student-form'>
 				<form action='' onSubmit={addStudentHandler}>
 					<div className='form-controls'>
@@ -168,15 +152,38 @@ const App = () => {
 					</div>
 				</form>
 			</div>
+
 			<div className='students'>
 				{students.length > 0 ? (
 					students.map((student, idx) => {
 						return (
 							<div className='students-student' key={student.id}>
-								<span>{student.username}</span> <br />
-								<span>{student.phone}</span>
-								<i className='fa-solid fa-trash'></i>
-							</div>
+          						{isEditing && editedStudentId === student.id ? (
+            						<div>
+              							<input type='text' value={editedUsername} onChange={(e) => setEditedUsername(e.target.value)} />
+              							<input type='text' value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} />
+              							<button onClick={() => saveChangeHandler(student.id)}>Lưu</button>
+              							<button onClick={() => setIsEditing(false)}>Hủy</button>
+            						</div>
+          						) : (
+            						<>
+              							<span>{student.username}</span> 
+              							<span>{student.phone}</span>
+										<div className='icons'>
+              								<i 
+												className='fa-solid fa-pen' 
+												onClick={() => editStudentHandler(student.id)}
+												title='Edit'
+											></i>
+              								<i 
+												className='fa-solid fa-trash' 
+												onClick={() => removeStudentHandler(student.id)}
+												title='Delete'	
+											></i>
+										</div>
+									</>
+          						)}
+        					</div>
 						)
 					})
 				) : (

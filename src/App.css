@@ -105,3 +105,18 @@ input.username-input {
 	text-align: center;
 }
 
+.icons {
+	display: flex;
+	gap: 20px;
+}
+
+.fa-trash:before {
+	content: '\f2ed';
+	cursor: pointer;
+	color: red;
+}
+
+.fa-pen {
+	cursor: pointer;
+	color: red;
+}
