@@ -70,7 +70,7 @@ const App = () => {
   const [courses, setCourses] = useState([]);
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [id, setId] = useState(NaN);
+  const [id, setId] = useState(null);
   const [action, setAction] = useState(ACTION_ADD);
 
   const fillForm = ({ username, phone, hobbies, courses }) => {
@@ -83,7 +83,7 @@ const App = () => {
     fillForm({ username: '', phone: '', hobbies: '', courses: [] });
   };
 
-  const handleCheckboxChange = (value) => {
+  const checkBoxChangeHandler = (value) => {
     if (courses.includes(value)) {
       setCourses(courses.filter((val) => val !== value));
     } else {
@@ -91,14 +91,14 @@ const App = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (action === ACTION_ADD) {
       // add
       addStudentHandler();
     } else if (action === ACTION_EDIT) {
       // edit
-      handleSaveChange();
+      saveChangeHandler();
     }
   };
   const addStudentHandler = () => {
@@ -130,14 +130,14 @@ const App = () => {
       })
     );
   };
-  const handleSaveChange = () => {
+  const saveChangeHandler = () => {
     editStudent(id, {
       username: studentUsername,
       phone,
       hobbies,
       courses,
     });
-    setId(NaN);
+    setId(null);
     setAction(ACTION_ADD);
     clearForm();
   };
@@ -146,25 +146,25 @@ const App = () => {
     setStudents(students.filter((std) => std.id !== id));
   };
 
-  const handleYes = () => {
+  const deleteHandler = () => {
     // Handle the "Yes" action from dialog
     setIsOpenDialog(false);
     deleteStudent(id);
-    setId(NaN);
+    setId(null);
     setAction(ACTION_ADD);
   };
 
-  const handleNo = () => {
+  const cancelDeleteHandler = () => {
     // Handle the "No" action from dialog
     setIsOpenDialog(false);
-    setId(NaN);
+    setId(null);
     setAction(ACTION_ADD);
   };
 
   return (
     <div className='app'>
       <div className='student-form'>
-        <form action='' onSubmit={handleSubmit}>
+        <form action='' onSubmit={submitHandler}>
           <div className='form-controls'>
             <label htmlFor='username'>Username</label>
             <input
@@ -202,7 +202,7 @@ const App = () => {
                     type='checkbox'
                     value={option}
                     checked={courses.includes(option)}
-                    onChange={() => handleCheckboxChange(option)}
+                    onChange={() => checkBoxChangeHandler(option)}
                   />
                 </label>
               ))}
@@ -210,7 +210,7 @@ const App = () => {
           </div>
           <div className='form-actions'>
             <button className='submit'>
-              {!isNaN(id) && action === ACTION_EDIT
+              {id !== null && action === ACTION_EDIT
                 ? 'Save change'
                 : 'Add New Student'}
             </button>
@@ -240,7 +240,7 @@ const App = () => {
                 <i
                   className='fa-solid fa-trash'
                   onClick={() => {
-                    if (!isNaN(id)) clearForm();
+                    if (id !== null) clearForm();
                     setAction(ACTION_DELETE);
                     setId(student.id);
                     setIsOpenDialog(true);
@@ -255,8 +255,8 @@ const App = () => {
       </div>
       <dialog open={isOpenDialog}>
         <p>Are you sure you want to proceed?</p>
-        <button onClick={handleYes}>Yes</button>
-        <button onClick={handleNo}>No</button>
+        <button onClick={deleteHandler}>Yes</button>
+        <button onClick={cancelDeleteHandler}>No</button>
       </dialog>
     </div>
   );
